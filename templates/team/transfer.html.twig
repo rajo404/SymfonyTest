@@ -1,0 +1,17 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Transfer Team{% endblock %}
+
+{% block content %}
+    <div class="transfer-form-header">
+        <h1 class="transfer-form-title">Transfer Player</h1>
+        <a href="{{ path('team_list') }}" class="btn btn-secondary">CANCEL</a>
+    </div>
+
+    <form class="transfer-form" method="post" action="{{ path('team_transfer', { 'team': team.id }) }}">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Transfer Player</button>
+        {{ form_end(form) }}
+    </form>
+{% endblock %}

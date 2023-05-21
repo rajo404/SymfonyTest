@@ -1,0 +1,46 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}New Team{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">Add New Team</h1>
+        </div>
+        <div class="card-body">
+            <form class="needs-validation" method="post" action="{{ path('team_new') }}" novalidate>
+                {{ form_row(form._token) }}
+                <div class="form-group">
+                    {{ form_label(form.name, 'Name') }}
+                    {{ form_widget(form.name, { 'attr': {'class': 'form-control', 'required': 'required'} }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.country, 'Country') }}
+                    {{ form_widget(form.country, { 'attr': {'class': 'form-control', 'required': 'required'} }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.country) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.balance, 'Balance') }}
+                    {{ form_widget(form.balance, { 'attr': {'class': 'form-control', 'required': 'required'} }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.balance) }}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ path('team_list') }}" class="btn btn-secondary mr-2">CANCEL</a>
+                        <button type="submit" class="btn btn-primary">Create Team</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
