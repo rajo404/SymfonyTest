@@ -29,4 +29,15 @@
         </form>
     </div>
 </div>
+    <h1>My Teams</h1>
+
+    {% if teams is empty %}
+        <p>No teams found.</p>
+    {% else %}
+        <ul>
+            {% for team in teams %}
+                <li>{{ team.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

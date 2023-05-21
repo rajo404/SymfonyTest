@@ -1,0 +1,63 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Team Details{% endblock %}
+
+{% block body %}
+    <div class="team-details-container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h1 class="card-title">{{ team.name }}</h1>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{{ path('team_list') }}" class="btn btn-secondary">BACK</a>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Country</th>
+                            <td>{{ team.country }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Balance</th>
+                            <td>$ {{ team.balance|number_format(2) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Players</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in team.players %}
+                            <tr>
+                                <td>{{ player.firstName }}</td>
+                                <td>{{ player.lastName }}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Player Actions">
+                                        <a href="{{ path('team_show', {'id': player.id}) }}" class="btn btn-sm btn-primary">Buy</a>
+                                        <a href="{{ path('team_show', {'id': player.id}) }}" class="btn btn-sm btn-danger">Sell</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

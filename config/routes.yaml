@@ -39,8 +39,8 @@ team_list:
 
 team_new:
     path: /teams/new
-    controller: App\Controller\TeamController::createTeam
-    methods: GET|POST
+    controller: App\Controller\TeamController::new
+    methods: [GET]
 
 team_transfer:
     path: /teams/{team}/transfer

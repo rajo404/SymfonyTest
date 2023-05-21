@@ -1,0 +1,24 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Edit Player{% endblock %}
+
+{% block body %}
+    <h1>Edit Player</h1>
+
+    {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{{ path('player_list') }}" class="btn btn-secondary">Cancel</a>
+    {{ form_end(form) }}
+{% endblock %}

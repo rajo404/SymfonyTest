@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\TeamRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TeamRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Nullable;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
@@ -25,8 +26,12 @@ class Team
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $balance = null;
 
-    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Player::class)]
-    private $players;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $user;
+
+    #[ORM\ManyToMany(targetEntity: Player::class, inversedBy: 'teams')]
+    #[ORM\JoinTable(name: 'player_team')]
+    private Collection $players;
 
     public function __construct()
     {
@@ -82,25 +87,33 @@ class Team
         return $this->players;
     }
 
-    public function addPlayers(Player $players): self
-    {
-        if (!$this->players->contains($players)) {
-            $this->players->add($players);
-            $players->setTeam($this);
-        }
 
+    public function addPlayers(Player $player): self
+    {
+        if (!$this->players->contains($player)) {
+            $this->players[] = $player;
+            $player->addTeam($this);
+        }
+    
+        return $this;
+    }
+    
+    public function removePlayers(Player $player): self
+    {
+        if ($this->players->removeElement($player)) {
+            $player->removeTeam($this);
+        }
+    
         return $this;
     }
 
-    public function removePlayers(Player $players): self
+    public function getUser(): ?User
     {
-        if ($this->players->removeElement($players)) {
-            // set the owning side to null (unless already changed)
-            if ($players->getTeam() === $this) {
-                $players->setTeam(null);
-            }
-        }
+        return $this->user;
+    }
 
-        return $this;
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
     }
 }
