@@ -4,8 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Team;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
@@ -21,14 +20,9 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
-    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'players')]
-    #[ORM\JoinTable(name: 'player_team')]
-    private Collection $teams;
-
-    public function __construct()
-    {
-        $this->teams = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'id')]
+    private ?Team $team;
 
     public function getId(): ?int
     {
@@ -59,29 +53,14 @@ class Player
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
-    public function getTeams(): Collection
+    public function getTeam(): ?Team
     {
-        return $this->teams;
+        return $this->team;
     }
 
-    public function addTeam(Team $team): self
+    public function setTeam(?Team $team): self
     {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->addPlayers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->removeElement($team)) {
-            $team->removePlayers($this);
-        }
+        $this->team = $team;
 
         return $this;
     }

@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlayerController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -53,7 +53,7 @@ class PlayerController extends AbstractController
     #[Route('/players/{id}/buy', name: 'player_buy')]
     public function buyPlayer(Player $player): Response
     {
-        // Logic for buying a player
+        // Logique pour acheter un joueur
 
         return $this->redirectToRoute('player_list');
     }
@@ -61,7 +61,7 @@ class PlayerController extends AbstractController
     #[Route('/players/{id}/sell', name: 'player_sell')]
     public function sellPlayer(Player $player): Response
     {
-        // Logic for selling a player
+        // Logique pour vendre un joueur
 
         return $this->redirectToRoute('player_list');
     }
@@ -74,7 +74,7 @@ class PlayerController extends AbstractController
         ]);
     }
 
-    #[Route('/players/{id}/edit', name:'player_edit')]
+    #[Route('/players/{id}/edit', name: 'player_edit')]
     public function edit(Request $request, Player $player): Response
     {
         $form = $this->createForm(PlayerFormType::class, $player);
@@ -91,7 +91,7 @@ class PlayerController extends AbstractController
         ]);
     }
 
-    #[Route('/players/{id}/delete', name:'player_delete', methods:['GET', 'POST'])]
+    #[Route('/players/{id}/delete', name: 'player_delete', methods: ['GET', 'POST'])]
     public function delete(Player $player): Response
     {
         $this->entityManager->remove($player);

@@ -27,12 +27,7 @@
                         <tr>
                             <td>{{ player.firstName }}</td>
                             <td>{{ player.lastName }}</td>
-                            <td>
-                                {% for team in player.teams %}
-                                    {{ team.name }}
-                                    {% if not loop.last %}, {% endif %}
-                                {% endfor %}
-                            </td>
+                            <td></td>
                             <td>
                                 <a href="{{ path('player_edit', {'id': player.id}) }}" class="btn btn-sm btn-primary">Edit</a>
                                 <form action="{{ path('player_delete', {'id': player.id}) }}" method="post" style="display: inline;">

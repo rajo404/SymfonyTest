@@ -13,29 +13,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use \Symfony\Bundle\SecurityBundle\Security;
 
 class TeamController extends AbstractController
 {
-    private Security $security;
-
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->security = $security;
         $this->entityManager = $entityManager;
     }
 
-
     #[Route('/teams', name: 'team_list')]
-    public function listTeams(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
+    public function listTeams(Request $request, PaginatorInterface $paginator): Response
     {
-        $teamRepository = $entityManager->getRepository(Team::class);
+        $teamRepository = $this->entityManager->getRepository(Team::class);
         $teams = $teamRepository->findAll();
-
-        $user = $this->security->getUser();
-        $teams = $user->getTeams();
 
         // Filtres
         $countryFilter = $request->query->get('country');
@@ -57,15 +49,15 @@ class TeamController extends AbstractController
     }
 
     #[Route('/teams/new', name: 'team_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $team = new Team();
         $form = $this->createForm(TeamType::class, $team);
     
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($team);
-            $entityManager->flush();
+            $this->entityManager->persist($team);
+            $this->entityManager->flush();
     
             // Redirigez vers la page appropriée après l'ajout de l'équipe
             return $this->redirectToRoute('team_list');
@@ -80,6 +72,8 @@ class TeamController extends AbstractController
     public function transferPlayer(Request $request, Team $team): Response
     {
         $player = new Player();
+        $player->setTeam($team); // Lier le joueur à l'équipe actuelle
+
         $form = $this->createForm(PlayerTransferType::class, $player);
 
         $form->handleRequest($request);
@@ -88,7 +82,7 @@ class TeamController extends AbstractController
             $buyer = $form->get('buyer')->getData();
             $amount = $form->get('amount')->getData();
 
-            // Implement your logic for transferring the player and updating team balances here
+            // Implémentez votre logique pour transférer le joueur et mettre à jour les soldes de l'équipe ici
 
             return $this->redirectToRoute('team_list');
         }
@@ -119,7 +113,7 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('team_list');
         }
 
-        return $this->render('team/team_edit.html.twig', [
+        return $this->render('team/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
