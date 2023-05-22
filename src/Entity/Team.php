@@ -12,31 +12,31 @@ use App\Repository\TeamRepository;
 class Team
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    * @ORM\Id
+    * @ORM\GeneratedValue
+    * @ORM\Column(type="integer")
+    */
     private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
+    * @ORM\Column(type="string", length=255)
+    */
     private ?string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
+    * @ORM\Column(type="string", length=255)
+    */
     private ?string $country;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
-     */
+    * @ORM\Column(type="decimal", precision=10, scale=2)
+    */
     private ?string $balance;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Player::class)
-     * @ORM\JoinColumn(name="player_id", referencedColumnName="id")
-     */
+    * @ORM\ManyToOne(targetEntity=Player::class)
+    * @ORM\JoinColumn(name="player_id", referencedColumnName="id")
+    */
     private ?Player $player;
 
     public function __construct()

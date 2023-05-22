@@ -26,40 +26,25 @@ class TeamController extends AbstractController
     #[Route('/teams', name: 'team_list')]
     public function listTeams(Request $request, PaginatorInterface $paginator): Response
     {
-        $teamRepository = $this->entityManager->getRepository(Team::class);
-        $teams = $teamRepository->findAll();
-
-        // Filtres
-        $countryFilter = $request->query->get('country');
-
-        // Query
-        $query = $teamRepository->createQueryBuilder('t')
-            ->getQuery();
-
-        $pagination = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            10 // Number of items per page
-        );
+        $teams = $this->entityManager->getRepository(Team::class)->findAll();
 
         return $this->render('team/list.html.twig', [
             'teams' => $teams,
-            'pagination' => $pagination,
         ]);
     }
 
-    #[Route('/teams/new', name: 'team_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    #[Route('/teams/new', name: 'team_new')]
+    public function newTeam(Request $request): Response
     {
         $team = new Team();
+
         $form = $this->createForm(TeamType::class, $team);
-    
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($team);
             $this->entityManager->flush();
     
-            // Redirigez vers la page appropriée après l'ajout de l'équipe
             return $this->redirectToRoute('team_list');
         }
 
@@ -113,7 +98,7 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('team_list');
         }
 
-        return $this->render('team/edit.html.twig', [
+        return $this->render('team/team_edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

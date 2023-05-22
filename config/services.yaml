@@ -19,7 +19,6 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            # - '../src/Entity/'  <--- Remove this line to include App\Entity\Team
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed

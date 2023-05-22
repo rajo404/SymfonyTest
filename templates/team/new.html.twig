@@ -3,13 +3,36 @@
 {% block title %}Add New Team{% endblock %}
 
 {% block body %}
-    <h1>Add New Team</h1>
+    <div class="container">
+        <h1>Add New Team</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.country) }}
-    {{ form_row(form.balance) }}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_start(form) }}
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    {{ form_end(form) }}
+                <div class="form-group">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.country) }}
+                    {{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.country) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.balance) }}
+                    {{ form_widget(form.balance, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_errors(form.balance) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{ path('team_list') }}" class="btn btn-secondary">Cancel</a>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
