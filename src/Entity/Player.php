@@ -6,22 +6,32 @@ use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Team;
 
-#[ORM\Entity(repositoryClass: PlayerRepository::class)]
+/**
+ * @ORM\Entity(repositoryClass=PlayerRepository::class)
+ */
 class Player
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    /**
+    * @ORM\Id
+    * @ORM\GeneratedValue
+    * @ORM\Column(type="integer")
+    */
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+    * @ORM\Column(type="string", length=255)
+    */
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255)]
+    /**
+    * @ORM\Column(type="string", length=255)
+    */
     private ?string $lastName = null;
 
-    #[ORM\ManyToOne(targetEntity: Team::class)]
-    #[ORM\JoinColumn(name: 'team_id', referencedColumnName: 'id')]
+    /**
+    * @ORM\ManyToOne(targetEntity=Team::class)
+    * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
+    */
     private ?Team $team;
 
     public function getId(): ?int
