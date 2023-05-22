@@ -7,7 +7,6 @@ framework:
         #auto_mapping:
         #    App\Entity\: []
 
-when@test:
-    framework:
-        validation:
-            not_compromised_password: false
+    # Reste de la configuration spécifique aux autres environnements...
+
+    test: false

@@ -18,9 +18,6 @@ class TeamType extends AbstractType
             ->add('country')
             ->add('balance', MoneyType::class, [
                 'currency' => 'USD',
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Create Team',
             ]);
     }
 

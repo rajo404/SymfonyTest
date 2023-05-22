@@ -24,7 +24,7 @@ class TeamController extends AbstractController
     }
 
     #[Route('/teams', name: 'team_list')]
-    public function listTeams(Request $request, PaginatorInterface $paginator): Response
+    public function listTeams(Request $request): Response
     {
         $teams = $this->entityManager->getRepository(Team::class)->findAll();
 

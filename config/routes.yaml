@@ -1,13 +1,9 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
-
+# Home Page Route
 homepage:
     path: /
     controller: App\Controller\HomeController::index
 
+#Login, Register, Logout Route
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login
@@ -20,6 +16,11 @@ app_forgot_password:
     path: /forgot-password
     controller: App\Controller\SecurityController::forgotPassword
 
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout
+
+#Dashboard Route
 app_dashboard:
     path: /dashboard
     controller: App\Controller\DashboardController::index
@@ -32,6 +33,7 @@ update_profile:
     path: /profile/update
     controller: App\Controller\ProfileController::update
 
+# Team Route
 team_list:
     path: /teams
     controller: App\Controller\TeamController::listTeams
@@ -39,12 +41,57 @@ team_list:
 
 team_new:
     path: /teams/new
-    controller: App\Controller\TeamController::new
-    methods: [GET]
+    controller: App\Controller\TeamController::newTeam
 
 team_transfer:
     path: /teams/{team}/transfer
     controller: App\Controller\TeamController::transferPlayer
     methods: GET|POST
 
+team_show:
+    path: /teams/{id}
+    controller: App\Controller\TeamController::show
+    methods: GET
+
+team_edit:
+    path: /team/{id}/edit
+    controller: App\Controller\TeamController::edit
+    methods: GET
+
+team_delete:
+    path: /team/{id}/delete
+    controller: App\Controller\TeamController::delete
+    methods: GET', 'POST
+
+#Player Route
+player_list:
+    path: /players
+    controller: App\Controller\PlayerController::listPlayers
+
+player_new:
+    path: /players/new
+    controller: App\Controller\PlayerController::newPlayer
+
+player_buy:
+    path: /players/{id}/buy
+    controller: App\Controller\PlayerController::buyPlayer
+
+player_sell:
+    path: /players/{id}/sell
+    controller: App\Controller\PlayerController::sellPlayer
+
+player_show:
+    path: /players/{id}
+    controller: App\Controller\PlayerController::show
+
+player_edit:
+    path: /players/{id}/edit
+    controller: App\Controller\PlayerController::edit
+
+player_delete:
+    path: /players/{id}/delete
+    controller: App\Controller\PlayerController::delete
+    methods: GET|POST
+
+#Market Route(player transaction)
 

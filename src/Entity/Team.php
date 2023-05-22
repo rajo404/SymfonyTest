@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Entity\Player;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TeamRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
@@ -12,32 +12,26 @@ use App\Repository\TeamRepository;
 class Team
 {
     /**
-    * @ORM\Id
-    * @ORM\GeneratedValue
-    * @ORM\Column(type="integer")
-    */
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
     private ?int $id;
 
     /**
-    * @ORM\Column(type="string", length=255)
-    */
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $name;
 
     /**
-    * @ORM\Column(type="string", length=255)
-    */
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $country;
 
     /**
-    * @ORM\Column(type="decimal", precision=10, scale=2)
-    */
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     */
     private ?string $balance;
-
-    /**
-    * @ORM\ManyToOne(targetEntity=Player::class)
-    * @ORM\JoinColumn(name="player_id", referencedColumnName="id")
-    */
-    private ?Player $player;
 
     public function __construct()
     {
@@ -45,7 +39,6 @@ class Team
         $this->name = null;
         $this->country = null;
         $this->balance = null;
-        $this->player = null;
     }
 
     public function getId(): ?int
@@ -85,18 +78,6 @@ class Team
     public function setBalance(string $balance): self
     {
         $this->balance = $balance;
-
-        return $this;
-    }
-
-    public function getPlayer(): ?Player
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(?Player $player): self
-    {
-        $this->player = $player;
 
         return $this;
     }
