@@ -91,4 +91,9 @@ player_delete:
     controller: App\Controller\PlayerController::delete
 
 #Market Route(player transaction)
-
+market_index:
+    path: /market
+    controller: App\Controller\MarketController::index
+    methods: GET
+    requirements:
+        _format: html

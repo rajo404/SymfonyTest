@@ -81,8 +81,11 @@ class TeamController extends AbstractController
     #[Route('/teams/{id}', name: 'team_show')]
     public function show(Team $team): Response
     {
+        $players = $team->getPlayers();
+
         return $this->render('team/show.html.twig', [
             'team' => $team,
+            'players' => $players,
         ]);
     }
 

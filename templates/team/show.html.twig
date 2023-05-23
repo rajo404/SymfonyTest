@@ -43,13 +43,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for player in team.id %}
+                        {% for players in team.players %}
                             <tr>
-                                <td>{{ player.firstName }}</td>
-                                <td>{{ player.lastName }}</td>
+                                <td>{{ players.firstName }}</td>
+                                <td>{{ players.lastName }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Player Actions">
-                                        <a href="{{ path('team_show', {'id': player.id}) }}" class="btn btn-sm btn-danger">Sell</a>
+                                        <a href="{{ path('player_edit', {'id': players.id}) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{{ path('team_show', {'id': players.id}) }}" class="btn btn-sm btn-danger">Sell</a>
                                     </div>
                                 </td>
                             </tr>

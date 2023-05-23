@@ -1,0 +1,25 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Market{% endblock %}
+
+{% block content %}
+    <h1>Market</h1>
+
+    <ul>
+        {% for team in teams %}
+            <li>
+                {{ team.name }} :
+                {% if team.playersForSale is empty %}
+                    Aucun joueur à vendre.
+                {% else %}
+                    Joueurs à vendre :
+                    <ul>
+                        {% for player in team.playersForSale %}
+                            <li>{{ player.firstName }} {{ player.lastName }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TeamRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
@@ -32,6 +33,11 @@ class Team
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private ?string $balance;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Player::class, mappedBy="team")
+     */
+    private Collection $players;
 
     public function __construct()
     {
@@ -80,5 +86,15 @@ class Team
         $this->balance = $balance;
 
         return $this;
+    }
+
+    /**
+     * Get the players associated with the team.
+     *
+     * @return Collection|Player[]
+     */
+    public function getPlayers(): Collection
+    {
+        return $this->players;
     }
 }

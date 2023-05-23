@@ -32,7 +32,7 @@ class Player
     * @ORM\ManyToOne(targetEntity=Team::class)
     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
     */
-    private ?Team $team;
+    private ?Team $team = null;
 
     public function getId(): ?int
     {
