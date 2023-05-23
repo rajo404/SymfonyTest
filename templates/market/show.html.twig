@@ -3,36 +3,46 @@
 {% block title %}Market - {{ team.name }}{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>{{ team.name }}</h1>
-
-        <h2>Joueurs à vendre :</h2>
-
-        {% if playersForSale is empty %}
-            <p>Aucun joueur à vendre dans cette équipe.</p>
-        {% else %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Players Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in playersForSale %}
-                        <tr>
-                            <td>{{ player.firstName }} {{ player.lastName }}</td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Player Actions">
-                                    <a href="{{ path('market_index', {'team': team.id, 'player': player.id}) }}" class="btn btn-sm btn-success">Buy</a>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-
-        <a href="{{ path('market_index') }}" class="btn btn-primary">Back</a>
+        <a href="{{ path('market_index') }}" class="btn btn-secondary">BACK</a>
     </div>
+
+    <h2>Joueurs à vendre :</h2>
+
+    {% if playersForSale is empty %}
+        <p>Aucun joueur à vendre dans cette équipe.</p>
+    {% else %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Players Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in playersForSale %}
+                    <tr>
+                        <td>{{ player.firstName }} {{ player.lastName }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Player Actions">
+                                <form action="{{ path('buy_player') }}" method="post">
+                                    <input type="hidden" name="playerId" value="{{ player.id }}">
+                                    <div class="input-group">
+                                        <input type="number" name="price" class="form-control" placeholder="Price">
+                                        <select name="teamId" class="form-select">
+                                            {% for userTeam in userTeams %}
+                                                <option value="{{ userTeam.id }}">{{ userTeam.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-success">Buy</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
