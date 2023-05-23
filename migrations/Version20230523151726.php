@@ -20,6 +20,7 @@ final class Version20230523151726 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE team ADD user_id INT NOT NULL');
         $this->addSql('ALTER TABLE team ADD CONSTRAINT FK_C4E0A61FA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('CREATE INDEX IDX_C4E0A61FA76ED395 ON team (user_id)');
     }
@@ -29,5 +30,6 @@ final class Version20230523151726 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE team DROP FOREIGN KEY FK_C4E0A61FA76ED395');
         $this->addSql('DROP INDEX IDX_C4E0A61FA76ED395 ON team');
+        $this->addSql('ALTER TABLE team DROP user_id');
     }
 }
