@@ -97,4 +97,11 @@ class Team
     {
         return $this->players;
     }
+
+    public function getPlayersForSale()
+    {
+        return $this->players->filter(function($player) {
+            return $player->getStatus() === 'ForSell';
+        });
+    }
 }

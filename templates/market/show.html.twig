@@ -1,0 +1,38 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Market - {{ team.name }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ team.name }}</h1>
+
+        <h2>Joueurs à vendre :</h2>
+
+        {% if playersForSale is empty %}
+            <p>Aucun joueur à vendre dans cette équipe.</p>
+        {% else %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Players Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in playersForSale %}
+                        <tr>
+                            <td>{{ player.firstName }} {{ player.lastName }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Player Actions">
+                                    <a href="{{ path('market_index', {'team': team.id, 'player': player.id}) }}" class="btn btn-sm btn-success">Buy</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <a href="{{ path('market_index') }}" class="btn btn-primary">Back</a>
+    </div>
+{% endblock %}

@@ -114,4 +114,14 @@ class TeamController extends AbstractController
 
         return $this->redirectToRoute('team_list');
     }
+    
+    #[Route('/team/{team}/sell/{player}', name:'team_sell')]
+    public function sell(Team $team, Player $player): Response
+    {
+        $player->setStatus('ForSell');
+        $this->entityManager->flush();
+        
+        return $this->redirectToRoute('team_show', ['id' => $team->getId()]);
+    }
 }
+

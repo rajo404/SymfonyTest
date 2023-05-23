@@ -2,24 +2,59 @@
 
 {% block title %}Market{% endblock %}
 
-{% block content %}
-    <h1>Market</h1>
+{% block body %}
+    <div class="container">
+        <h1 class="mt-4">Market</h1>
 
-    <ul>
-        {% for team in teams %}
-            <li>
-                {{ team.name }} :
-                {% if team.playersForSale is empty %}
-                    Aucun joueur à vendre.
-                {% else %}
-                    Joueurs à vendre :
-                    <ul>
-                        {% for player in team.playersForSale %}
-                            <li>{{ player.firstName }} {{ player.lastName }}</li>
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Team</th>
+                            <th scope="col">Number of Players to Sell</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in teams %}
+                            {% set playersForSale = team.players|filter(p => p.status == 'ForSell') %}
+                            <tr>
+                                <td>{{ team.name }}</td>
+                                <td>{{ playersForSale|length }}</td>
+                                <td>
+                                    <a href="{{ path('market_show', { 'id': team.id }) }}" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#teamModal_{{ team.id }}">Show</a>
+                                </td>
+                            </tr>
                         {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% for team in teams %}
+        <div class="modal fade" id="teamModal_{{ team.id }}" tabindex="-1" aria-labelledby="teamModalLabel_{{ team.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="teamModalLabel_{{ team.id }}">{{ team.name }} - Players for Sale</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% set playersForSale = team.players|filter(p => p.status == 'ForSell') %}
+                        {% if playersForSale is empty %}
+                            <p>No players to sell in this team.</p>
+                        {% else %}
+                            <ul>
+                                {% for player in playersForSale %}
+                                    <li>{{ player.firstName }} {{ player.lastName }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

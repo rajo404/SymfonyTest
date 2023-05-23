@@ -61,6 +61,10 @@ team_delete:
     path: /team/{id}/delete
     controller: App\Controller\TeamController::delete
 
+team_sell:
+    path: /team/{team}/sell/{player}
+    controller: App\Controller\TeamController::sell
+
 #Player Route
 player_list:
     path: /players
@@ -97,3 +101,7 @@ market_index:
     methods: GET
     requirements:
         _format: html
+
+market_show:
+    path: /market/{id}
+    controller: App\Controller\MarketController::show

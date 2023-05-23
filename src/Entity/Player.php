@@ -29,6 +29,11 @@ class Player
     private ?string $lastName = null;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $status = null;
+
+    /**
     * @ORM\ManyToOne(targetEntity=Team::class)
     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
     */
@@ -73,5 +78,15 @@ class Player
         $this->team = $team;
 
         return $this;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
     }
 }
