@@ -39,6 +39,12 @@ class Team
      */
     private Collection $players;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="teams")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->id = null;
@@ -103,5 +109,17 @@ class Team
         return $this->players->filter(function($player) {
             return $player->getStatus() === 'ForSell';
         });
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

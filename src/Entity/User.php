@@ -46,11 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team")
-     * @ORM\JoinTable(name="user_teams",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="team_id", referencedColumnName="id")}
-     * )
+     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="user")
      */
     private $teams;
 
@@ -159,5 +155,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getTeams(): Collection
     {
         return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            // set the owning side to null (unless already changed)
+            if ($team->getUser() === $this) {
+                $team->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
