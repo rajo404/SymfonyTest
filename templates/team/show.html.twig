@@ -43,17 +43,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for players in team.players %}
-                            <tr>
-                                <td>{{ players.firstName }}</td>
-                                <td>{{ players.lastName }}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Player Actions">
-                                        <a href="{{ path('player_edit', {'id': players.id}) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="{{ path('team_sell', {'team': team.id, 'player': players.id}) }}" class="btn btn-sm btn-danger">Sell</a>
-                                    </div>
-                                </td>
-                            </tr>
+                        {% for player in team.players %}
+                            {% if player.status != 'ForSell' %}
+                                <tr>
+                                    <td>{{ player.firstName }}</td>
+                                    <td>{{ player.lastName }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Player Actions">
+                                            <a href="{{ path('player_edit', {'id': player.id}) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="{{ path('team_sell', {'team': team.id, 'player': player.id}) }}" class="btn btn-sm btn-danger">Sell</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

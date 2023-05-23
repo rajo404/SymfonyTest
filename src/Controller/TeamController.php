@@ -81,11 +81,20 @@ class TeamController extends AbstractController
     #[Route('/teams/{id}', name: 'team_show')]
     public function show(Team $team): Response
     {
+        $playersForSale = [];
+
+        foreach ($team->getPlayers() as $player) {
+            if ($player->getStatus() === 'ForSell') {
+                $playersForSale[] = $player;
+            }
+        }
+
         $players = $team->getPlayers();
 
         return $this->render('team/show.html.twig', [
             'team' => $team,
             'players' => $players,
+            'playersForSale' => $playersForSale,
         ]);
     }
 

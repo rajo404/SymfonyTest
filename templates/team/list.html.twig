@@ -27,7 +27,7 @@
                             <td>{{ team.name }}</td>
                             <td>{{ team.country }}</td>
                             <td>$ {{ team.balance|number_format(2) }}</td>
-                            <td>{{ team.players.count }}</td>
+                            <td>{{ team.players|filter(p => p.status != 'ForSell')|length }}</td>
                              <td>
                                 <a href="{{ path('team_edit', {'id': team.id}) }}" class="btn btn-sm btn-primary">Edit</a>
                                 <form action="{{ path('team_delete', {'id': team.id}) }}" method="post" style="display: inline;">
