@@ -56,12 +56,10 @@ team_show:
 team_edit:
     path: /team/{id}/edit
     controller: App\Controller\TeamController::edit
-    methods: GET
 
 team_delete:
     path: /team/{id}/delete
     controller: App\Controller\TeamController::delete
-    methods: GET', 'POST
 
 #Player Route
 player_list:
@@ -91,7 +89,6 @@ player_edit:
 player_delete:
     path: /players/{id}/delete
     controller: App\Controller\PlayerController::delete
-    methods: GET|POST
 
 #Market Route(player transaction)
 
