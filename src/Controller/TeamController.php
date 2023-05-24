@@ -37,7 +37,9 @@ class TeamController extends AbstractController
     #[Route('/teams/new', name: 'team_new')]
     public function newTeam(Request $request): Response
     {
+        $user = $this->getUser();
         $team = new Team();
+        $team->setUser($user);
 
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
