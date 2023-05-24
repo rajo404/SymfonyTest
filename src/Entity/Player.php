@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Team;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Team;
 
 /**
  * @ORM\Entity(repositoryClass=PlayerRepository::class)

@@ -3,58 +3,48 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
-* @ORM\Entity(repositoryClass=UserRepository::class)
-*/
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
-    * @ORM\Id
-    * @ORM\GeneratedValue
-    * @ORM\Column(type="integer")
-    */
-    private ?int $id = null;
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $username = null;
+    private ?string $username;
 
     /**
-    * @ORM\Column(type="string", length=255)
-    */
-    private ?string $email = null;
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $email;
 
     /**
-    * @ORM\Column(type="json")
-    */
+     * @ORM\Column(type="json")
+     */
     private array $roles = [];
 
     /**
-    * @var string The hashed password
-    */
-
-    /**
-    * @ORM\Column(type="string", length=255)
-    */
-    private ?string $password = null;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="user")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $teams;
-
-    /**
-     * @var string The plain password
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="The password field is required.")
      */
     private ?string $plainPassword = null;
+
+    public function __construct()
+    {
+        $this->roles = [];
+    }
 
     public function getId(): ?int
     {
@@ -86,8 +76,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
@@ -119,12 +107,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->plainPassword ?? '';
     }
 
     public function setPassword(string $password): self
     {
-        $this->password = $password;
+        $this->plainPassword = $password;
 
         return $this;
     }
@@ -144,40 +132,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;
-    }
-
-    /**
-     * @return Collection|Team[]
-     */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-            $team->setUser($this);
-        }
-    
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->contains($team)) {
-            $this->teams->removeElement($team);
-            // set the owning side to null (unless already changed)
-            if ($team->getUser() === $this) {
-                $team->setUser(null);
-            }
-        }
-
-        return $this;
     }
 }

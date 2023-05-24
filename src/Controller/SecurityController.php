@@ -6,31 +6,39 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private TokenStorageInterface $tokenStorage;
+    private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
     }
-    
+
     /**
      * @Route("/login", name="app_login")
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // Récupérer les erreurs de connexion s'il y en a
+        // Retrieve authentication error, if any
         $error = $authenticationUtils->getLastAuthenticationError();
-        // Dernier nom d'utilisateur saisi par l'utilisateur
+        // Retrieve the last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
@@ -42,7 +50,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -50,15 +58,12 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hasher le mot de passe de l'utilisateur
-            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPlainPassword());
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
             $user->setPassword($hashedPassword);
 
-            // Enregistrer l'utilisateur dans la base de données
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // Rediriger l'utilisateur vers la page de connexion
             return $this->redirectToRoute('app_login');
         }
 
@@ -72,7 +77,7 @@ class SecurityController extends AbstractController
      */
     public function forgotPassword(Request $request): Response
     {
-        // Votre logique pour la réinitialisation du mot de passe ici
+        // Your password reset logic here
         return $this->render('security/forgot_password.html.twig');
     }
 
@@ -81,7 +86,7 @@ class SecurityController extends AbstractController
      */
     public function dashboard(): Response
     {
-        // Logique pour afficher le tableau de bord de l'utilisateur connecté
+        // Logic to display the dashboard of the authenticated user
         return $this->render('security/dashboard.html.twig');
     }
 
@@ -91,9 +96,9 @@ class SecurityController extends AbstractController
     public function logout(UrlGeneratorInterface $urlGenerator): RedirectResponse
     {
         // You can add any additional logic here
-        
+
         $logoutUrl = $urlGenerator->generate('homepage');
-        
+
         return new RedirectResponse($logoutUrl);
     }
 }
