@@ -34,9 +34,9 @@ class Player
     private ?string $status = null;
 
     /**
-    * @ORM\ManyToOne(targetEntity=Team::class)
-    * @ORM\JoinColumn(name="team_id", referencedColumnName="id",  nullable=true)
-    */
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="players")
+     * @ORM\JoinColumn(nullable=false)
+     */
     private ?Team $team = null;
 
     public function getId(): ?int

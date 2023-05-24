@@ -47,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="user")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $teams;
 
@@ -163,7 +164,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->teams[] = $team;
             $team->setUser($this);
         }
-
+    
         return $this;
     }
 
